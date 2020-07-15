@@ -1,0 +1,133 @@
+<div class="animated fadeIn">
+  <div ng-controller="laporanbeliCtrl">
+    <div class="card" st-pipe="callServer" st-table="displayed" ng-if="!is_edit">
+
+      <div class="card-body p-0px">
+        <div class="pl-15px pr-15px">
+          <div class="row mt-15px">
+            <h6 class="ml-4 pl-3">
+              <i class="fa fa-file"></i> <b>Laporan Pembelian</b>
+            </h6>
+            <div class="col-md-12">
+              <div class="alert alert-white">
+                <form name="landaform" novalidate="">
+                  <div class="form-group row">
+                    <!-- <label class="col-sm-1 col-form-label-sm required">Periode</label> -->
+                    <label class="col-sm-1 col-form-label-sm">Periode <span class="text-danger">*</span></label>
+                    <div class="col-md-5">
+                      <div class="input-group">
+                        <input type="text" class="form-control form-control-sm" is-open="opened.bulan"
+                          ng-click="toggle($event, 'bulan')" ng-model="form.bulan" uib-datepicker-popup="MMMM yyyy"
+                          datepicker-options="{minMode: 'month'}" placeholder="Bulan & Tahun" />
+                        <div class="input-group-append">
+                          <span class="input-group-text">
+                            <i class="fa fa-calendar"></i>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <label class="col-sm-1 col-form-label-sm">Supplier <span class="text-danger">*</span></label>
+                    <div class="col-md-5">
+                      <input st-search="m_supplier.nama" class="form-control form-control-sm"
+                        placeholder="Ketik Nama Supplier" />
+                    </div>
+                  </div>
+                  <hr />
+                  <div class="text-center">
+                    <!-- <button type="button" class="btn btn-primary btn-sm"
+                                            ng-init="isCollapsed = true"
+                                            ng-click="isCollapsed = !isCollapsed; filterData()"><i
+                                                class="fa fa-search"></i>Tampilkan</button> -->
+                    <button type="button" class="btn btn-primary btn-sm" ng-click="filterData()"
+                      style="cursor: pointer">
+                      <i class="fa fa-search"></i>Tampilkan
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- opened -->
+      </div>
+    </div>
+
+    <!-- START -->
+    <div class="card" ng-if="displayed.length<=0" ng-show="tampilkan">
+      <h6 class="text-center pt-2">Tidak ada data</h6>
+    </div>
+    <div class="card" ng-if="displayed.length>0" ng-show="tampilkan">
+      <div class="card-header bg-white">
+        <div class="btn-group pull-right" role="group">
+          <button type="button" class="btn btn-sm btn-outline-primary" ng-click="export()">
+            <i class="fa fa-file"></i> Excel
+          </button>
+          <!-- <a class="btn btn-sm btn-outline-primary" ui-sref="app.printlaporan"><i class="fa fa-print"></i>
+                        Print</a> -->
+          <button type="button" class="btn btn-sm btn-outline-primary" ng-click="printData()">
+            <i class="fa fa-print"></i> Print
+          </button>
+        </div>
+      </div>
+      <hr class="mt-0 mb-0" />
+      <div class="card-body">
+        <div class="table-responsive" id="printData">
+          <h4 class="text-center">
+            <b>Laporan Pembelian</b> <br />Bulan {{dataBulan}} {{dataTahun}}
+          </h4>
+          <hr />
+          <table class="table table-bordered table-hover" border="1" id="tabelData">
+            <thead>
+              <tr class="bg-light">
+                <!-- <th class="align-left">No</th> -->
+                <th class="align-left">No Invoice</th>
+                <th class="align-left">Tanggal</th>
+                <th class="align-left">Supplier</th>
+                <th class="align-left">Barang</th>
+                <th class="align-left">Jumlah</th>
+                <th class="align-left">Harga Satuan</th>
+                <th class="align-center">Subtotal</th>
+                <!-- <th></th> -->
+              </tr>
+            </thead>
+            <tbody ng-show="!isLoading">
+              <tr ng-repeat="row in displayed" ng-dblclick="view(row)">
+                <!-- <td class="align-left">
+                                    {{ (row.id_beli != displayed[$index - 1].id_beli) ? row.id : '' }}</td> -->
+                <td class="align-left text-dark">
+                  {{ (row.id_beli != displayed[$index - 1].id_beli) ?
+                  row.no_invoice : '' }}
+                </td>
+                <td class="align-left">
+                  {{ (row.id_beli != displayed[$index - 1].id_beli) ?
+                  row.tanggal : '' }}
+                </td>
+                <td class="align-left">
+                  {{ (row.id_beli != displayed[$index - 1].id_beli) ?
+                  row.nama_supplier : '' }}
+                </td>
+                <td class="align-left">{{ row.nama_barang }}</td>
+                <td class="align-left">{{ row.jumlah }}</td>
+                <td class="align-left">{{ row.harga_satuan |currency }}</td>
+                <td class="align-center">
+                  {{ row.jumlah*row.harga_satuan |currency }}
+                </td>
+              </tr>
+
+              <tr class="font-weight-bold bg-light">
+                <td colspan="6" class="text-center">
+                  <b>Total</b>
+                </td>
+                <td class="align-center">
+                  <b>{{getTotal() | currency}}</b>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- END -->
+    </div>
+  </div>
+</div>

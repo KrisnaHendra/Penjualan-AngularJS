@@ -1,0 +1,109 @@
+<div class="animated fadeIn">
+    <div ng-controller="penjualanpertahunCtrl">
+        <div class="card" st-pipe="callServer" st-table="displayed" ng-if="!is_edit">
+
+            <div class="card-body p-0px">
+                <div class="pl-15px pr-15px">
+                    <div class="row mt-15px">
+                        <h6 class="ml-4 pl-3"><i class="fa fa-file"></i><b> Rekap Penjualan Per Tahun</b></h6>
+                        <div class="col-md-12">
+                            <div class="alert alert-white">
+                                <form name="landaform" novalidate="">
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label-sm required">Pilih Tahun</label>
+                                        <div class="col-md-4">
+                                            <div class="input-group">
+                                              <input type="text" class="form-control form-control-sm"
+                                                  is-open="opened.tahun" ng-click="toggle($event, 'tahun')"
+                                                  ng-model="form.bulan" uib-datepicker-popup="yyyy"
+                                                  datepicker-options="{minMode: 'year'}" placeholder="Pilih Tahun">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <label class="col-sm-1 col-form-label-sm mb-0 required">Nama</label>
+                                        <div class="col-sm-5">
+                                            <input type="text" ng-model="form.nama_kategori" class="form-control form-control-sm"
+                                                placeholder="Cari berdasarkan Nama" />
+                                        </div>
+
+                                    </div>
+                                    <hr>
+                                    <div class="text-center">
+                                        <button type="button" class="btn btn-primary btn-sm"
+                                            ng-click="filterData()" style="cursor: pointer"><i
+                                                class="fa fa-search"></i>Tampilkan</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- opened -->
+            </div>
+        </div>
+
+        <!-- <0 -->
+        <!-- <div class="card" ng-if="listSum.length<=0" ng-show="tampilkan">
+          <h2 class="align-center pt-3 pb-3 font-weight-bold">Tidak Ada Data</h3>
+        </div> -->
+        <!-- END <0 -->
+        <!-- START -->
+        <div class="card" ng-show="tampilkan">
+            <div class="card-header bg-white">
+                <div class="btn-group pull-right" role="group">
+                    <button type="button" class="btn btn-sm btn-outline-primary" ng-click="export()"><i
+                            class="fa fa-file"></i>
+                        Excel</button>
+                    <button type="button" class="btn btn-sm btn-outline-primary" ng-click="print()"><i
+                            class="fa fa-print"></i>Print</button>
+                </div>
+            </div>
+            <hr class="mt-0 mb-0">
+            <div class="card-body">
+                <div class="table-responsive" id="rekapPenjualan">
+                    <h4 class="text-center"><b>Rekap Penjualan {{tahun}}</b></h4>
+                    <hr>
+                    <table class="table table-bordered table-hover" id="tabelRekap" border="1">
+                        <thead>
+                            <tr class="bg-light">
+                                <th rowspan="2" class="align-left">No</th>
+                                <th rowspan="2" class="align-left" class="col-md-5">Kategori</th>
+                                <th colspan="12" class="align-center uppercase">Penjualan Per Bulan Tahun {{tahun}}</th>
+                                <th rowspan="2" class="align-center">Total</th>
+                            </tr>
+                            <tr class="bg-light">
+                              <th class="align-center uppercase" ng-repeat="b in listBulan">{{b}}</th>
+                            </tr>
+                        </thead>
+                        <tbody ng-show="!isLoading">
+                            <tr ng-repeat="(key,value) in listData" ng-dblclick="view(row)">
+                              <td class="align-left">{{$index+1}}</td>
+                              <td class="align-left">{{key}}</td>
+                              <td class="align-center" ng-repeat="(key2,value2) in value">{{value2}}</td>
+                              <td class="align-center">{{listSum[key] | currency}}</td>
+                            </tr>
+
+                            <tr class="font-weight-bold bg-light">
+                                <td colspan="2" class="text-center">
+                                    <b>Total</b>
+                                </td>
+                                <td class="text-center" ng-repeat="sum in totalPerBulan">
+                                    <b>{{sum | currency}}</b>
+                                </td>
+                                <td class="align-center">
+                                  -
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- END -->
+
+        </div>
+    </div>
+  </div>

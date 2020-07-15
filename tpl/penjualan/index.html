@@ -1,0 +1,261 @@
+<div class="animated fadeIn">
+    <div ng-controller="mpenjualanCtrl">
+        <div class="card" st-pipe="callServer" st-table="displayed" ng-if="!is_edit">
+            <div class="card-header">
+                <strong class="d-md-down-none">Daftar Penjualan</strong>
+                <div class="btn-group pull-right mt-5px" role="group">
+                    <button class="btn btn-secondary btn-sm" ng-init="isCollapsed = true"
+                        ng-click="isCollapsed = !isCollapsed">
+                        <i class="fa fa-search"></i>
+                        &nbsp;Pencarian
+                    </button>
+                    <button class="btn btn-primary btn-sm" ng-click="create();">
+                        <i class="fa fa-plus"></i>
+                        &nbsp;Buat Baru
+                    </button>
+                </div>
+            </div>
+            <div class="card-body p-0px">
+                <div class="pl-15px pr-15px">
+                    <div class="row mt-15px" ng-show="!isCollapsed">
+                        <div class="col-md-12">
+                            <div class="alert alert-secondary">
+                                <form name="landaform" novalidate="">
+                                    <div class="form-group row mb-0">
+
+                                        <label class="col-sm-1 col-form-label-sm mb-0">Tanggal</label>
+                                        <div class="col-sm-2">
+                                            <input st-search="tanggal" class="form-control form-control-sm"
+                                                placeholder="Cari berdasarkan Tanggal" />
+                                        </div>
+                                        <label class="col-sm-1 col-form-label-sm mb-0">No Invoice</label>
+                                        <div class="col-sm-2">
+                                            <input st-search="no_invoice" class="form-control form-control-sm"
+                                                placeholder="Cari berdasarkan No_invoice" />
+                                        </div>
+                                        <label class="col-sm-1 col-form-label-sm mb-0">Customer</label>
+                                        <div class="col-sm-2">
+                                            <input st-search="m_customer.nama" class="form-control form-control-sm"
+                                                placeholder="Cari berdasarkan customer" />
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <!-- <th class="align-left">Id</th> -->
+                                <th class="align-left">No Invoice</th>
+                                <th class="align-left">Tanggal</th>
+                                <th class="align-left">Total</th>
+                                <th class="align-left">Customer</th>
+                                <th class="align-left">Dibuat Pada</th>
+                                <th class="align-left">Dibuat Oleh</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody ng-show="!isLoading">
+                            <tr ng-repeat="row in displayed" ng-dblclick="view(row)">
+                                <td class="align-left">{{ row.no_invoice }}</td>
+                                <td class="align-left">{{ row.tanggal }}</td>
+                                <td class="align-left">{{ row.total |currency }}</td>
+                                <td class="align-left">{{ row.nama_customer }}</td>
+                                <td class="align-left">{{ row.created_at*1000 | date:"dd-MM-y hh:mm" }}</td>
+                                <td class="align-left">{{ row.nama_user }}</td>
+                                <td>
+                                    <div class="btn-group pull-right" role="group">
+                                        <button type="button" class="btn btn-info fa fa-pencil"
+                                            ng-click="update(row)"></button>
+                                        <button type="button" class="btn btn-danger fa fa-trash"
+                                            ng-click="delete(row)"></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div st-pagination="" st-items-by-page="10" st-template="tpl/common/pagination.custom.html"></div>
+            </div>
+        </div>
+        <div class="card" ng-if="is_edit">
+            <div class="card-header">
+                <strong>
+                    {{ formtittle }}
+                </strong>
+            </div>
+            <div class="card-body">
+                <form name="landaform" novalidate="">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label-sm required">No Invoice</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control form-control-sm" ng-model="form.no_invoice"
+                                        maxlength="100" disabled />
+                                </div>
+                                <label class="col-sm-2 col-form-label-sm">Customer</label>
+                                <div class="col-sm-4">
+                                    <div class="input-group">
+                                        <ui-select ng-change="changeCustomer(form.id_customer)"
+                                            ng-model="form.id_customer" on-select="" theme="bootstrap"
+                                            style="width:82%">
+                                            <ui-select-match placeholder="Pilih Customer">
+                                                {{$select.selected.nama}}
+                                            </ui-select-match>
+                                            <ui-select-choices position="down"
+                                                repeat="value in customer | filter : $select.search"
+                                                value="{{value.id}}">
+                                                {{value.nama}}
+                                            </ui-select-choices>
+                                        </ui-select>
+                                        <!-- <select class="form-control form-control-sm" ng-model="form.id_customer"
+                                            ng-disabled="is_view">
+                                            <option value="">Pilih Customer</option>
+                                            <option ng-value="{{c.id}}" ng-repeat="c in customer">{{c.nama}}</option>
+                                        </select> -->
+                                        <div class="input-group-append" id="button-addon4">
+                                            <button class="btn btn-sm btn-primary" ng-click="addCustomer()"
+                                                uib-tooltip="Tambah"><i class="fa fa-plus"></i></button>
+                                            <button class="btn btn-sm btn-warning" ng-click="editCustomer(form)"
+                                                uib-tooltip="Edit"><i class="fa fa-pencil"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- </div>
+                            <div class="form-group row"> -->
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label-sm required">Tanggal</label>
+                                <div class="col-sm-4">
+                                    <div class="input-group-prepend">
+                                        <input type="text"
+                                            class="form-control form-control-sm ng-pristine ng-valid ng-isolate-scope ng-not-empty ng-valid-date ng-touched"
+                                            ng-click="toggle($event, 'tanggal')" is-open="opened.tanggal"
+                                            uib-datepicker-popup="dd-MM-yyyy" ng-model="form.tanggal"
+                                            datepicker-options="options" ng-disabled="is_view" />
+
+                                        <span class="input-group-text">
+                                            <i class="fa fa-calendar"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <!-- COBA -->
+                                <label class="col-sm-2 col-form-label-sm">Contact Person</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control form-control-sm" ng-model="form.telepon"
+                                        maxlength="100" ng-disabled="is_view" readonly />
+                                </div>
+                                <!-- END -->
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <!-- <label class="col-sm-2 col-form-label-sm">Tanggal</label>
+                                <div class="col-sm-4">
+                                    <div class="input-group-prepend">
+                                        <input type="text"
+                                            class="form-control form-control-sm ng-pristine ng-valid ng-isolate-scope ng-not-empty ng-valid-date ng-touched"
+                                            ng-click="toggle($event, 'tanggal')" is-open="opened.tanggal"
+                                            uib-datepicker-popup="dd-MM-yyyy" ng-model="form.tanggal"
+                                            datepicker-options="options" ng-disabled="is_view" />
+
+                                        <span class="input-group-text">
+                                            <i class="fa fa-calendar"></i>
+                                        </span>
+                                    </div>
+                                </div> -->
+                                <!-- COBA -->
+                                <label class="offset-sm-6 col-sm-2 col-form-label-sm">Alamat</label>
+                                <div class="col-sm-4">
+                                    <textarea type="text" class="form-control form-control-sm" ng-model="form.alamat"
+                                        maxlength="100" ng-disabled="is_view" readonly></textarea>
+                                </div>
+                                <!-- END -->
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h6 class="tittle-header" style="margin-bottom: 0px;">Detail</h6>
+                        </div>
+                        <div class="col-md-12">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th class="align-left">Nama Barang</th>
+                                        <th class="align-left">Harga Satuan</th>
+                                        <th class="align-left">Jumlah</th>
+                                        <th class="align-center">Total</th>
+                                        <th class="align-center" style="width: 10px;">
+                                            <button type="button" class="btn btn-success fa fa-plus"
+                                                ng-click="addDetail(listDetail)" ng-disabled="is_view"></button>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="v in listDetail">
+                                        <td class="align-left">
+                                            <select class="form-control form-control-sm" ng-model="v.id_barang"
+                                                ng-disabled="is_view">
+                                                <option value="">Pilih Barang</option>
+                                                <option ng-value="{{b.id}}" ng-repeat="b in barang">{{b.nama}}</option>
+                                            </select>
+                                            <!-- <input type="text" class="form-control form-control-sm" maxlength="11"
+                                                ng-model="v.id_barang" ng-disabled="is_view" /> -->
+                                        </td>
+                                        <td class="align-left">
+                                            <input type="text" class="form-control form-control-sm" maxlength="11"
+                                                ng-model="v.harga_satuan" ng-disabled="is_view" />
+                                        </td>
+                                        <td class="align-left">
+                                            <input type="text" class="form-control form-control-sm" maxlength="11"
+                                                ng-model="v.jumlah" ng-disabled="is_view" />
+                                        </td>
+                                        <td class="align-center">
+                                            <input type="text" class="form-control form-control-sm align-center"
+                                                maxlength="11" disabled ng-value="v.harga_satuan*v.jumlah" />
+                                        </td>
+                                        <td class="align-center">
+                                            <button type="button" class="btn btn-danger fa fa-minus"
+                                                ng-click="removeDetail(listDetail, $index)"
+                                                ng-disabled="is_view"></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <!-- <td></td>
+                                        <td></td>
+                                        <td></td> -->
+                                        <td colspan="5" class="align-right">Subtotal : {{getTotal()}}
+                                            <input type="text" ng-model="form.total" maxlength="11" disabled />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer">
+                <div class="pull-right">
+                    <button type="submit" class="btn btn-secondary btn-sm" ng-click="cancel()">
+                        <i class="fa fa-arrow-left"></i>
+                        &nbsp;Kembali
+                    </button>
+                    <button type="submit" class="btn btn-primary btn-sm" ng-hide="is_view" button-spinner="loading"
+                        ng-disabled="loading" ng-click="save(form)">
+                        <i class="fa fa-save"></i>
+                        &nbsp;Simpan
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

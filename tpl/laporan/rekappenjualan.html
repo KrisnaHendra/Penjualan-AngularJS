@@ -1,0 +1,96 @@
+<div class="animated fadeIn">
+    <div ng-controller="rekappenjualanCtrl">
+        <div class="card" st-pipe="callServer" st-table="displayed" ng-if="!is_edit">
+
+            <div class="card-body p-0px">
+                <div class="pl-15px pr-15px">
+                    <div class="row mt-15px">
+                        <h6 class="ml-4 pl-3"><i class="fa fa-file"></i><b> Rekap Penjualan</b></h6>
+                        <div class="col-md-12">
+                            <div class="alert alert-white">
+                                <form name="landaform" novalidate="">
+                                    <div class="form-group row">
+                                        <label class="col-sm-1 col-form-label-sm required">Periode</label>
+                                        <div class="col-md-11">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control form-control-sm"
+                                                    is-open="opened.bulan" ng-click="toggle($event, 'bulan')"
+                                                    ng-model="form.bulan" uib-datepicker-popup="MMMM yyyy"
+                                                    datepicker-options="{minMode: 'month'}" placeholder="Bulan & Tahun">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <hr>
+                                    <div class="text-center">
+                                        <button type="button" class="btn btn-primary btn-sm"
+                                            ng-click="filterData(filter)" style="cursor: pointer"><i
+                                                class="fa fa-search"></i>Tampilkan</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- opened -->
+            </div>
+        </div>
+
+        <!-- START -->
+        <div class="card" ng-show="tampilkan">
+            <div class="card-header bg-white">
+                <div class="btn-group pull-right" role="group">
+                    <button type="button" class="btn btn-sm btn-outline-primary" ng-click="export()"><i
+                            class="fa fa-file"></i>
+                        Excel</button>
+                    <button type="button" class="btn btn-sm btn-outline-primary" ng-click="print()"><i
+                            class="fa fa-print"></i>Print</button>
+                </div>
+            </div>
+            <hr class="mt-0 mb-0">
+            <div class="card-body">
+                <div class="table-responsive" id="rekapPenjualan">
+                    <h4 class="text-center"><b>Rekap Penjualan</b> <br>Bulan {{dataBulan}} {{dataTahun}}</h4>
+                    <hr>
+                    <table class="table table-bordered table-hover" id="tabelRekap" border="1">
+                        <thead>
+                            <tr class="bg-light">
+                                <th rowspan="2" class="align-left">No</th>
+                                <th rowspan="2" class="align-left" class="col-md-5">Nama Barang</th>
+                                <th colspan="{{colspanBulan}}" class="align-center uppercase">{{dataBulan}}
+                                    {{dataTahun}}</th>
+                                <th rowspan="2" class="align-center">Total</th>
+                            </tr>
+                            <tr class="bg-light">
+                                <th ng-repeat="n in range(1,31)">{{n}}</th>
+                            </tr>
+                        </thead>
+                        <tbody ng-show="!isLoading">
+                            <tr ng-repeat="(key, value) in listKas" ng-dblclick="view(row)">
+                                <td class="align-left">{{ $index+1 }}</td>
+                                <td class="align-left">{{ key }}</td>
+                                <td ng-repeat="(data,hasil) in value">{{hasil}}</td>
+                                <td class="align-center">{{listSum[key]}}</td>
+                            </tr>
+
+                            <tr class="font-weight-bold bg-light">
+                                <td colspan="{{colspan}}" class="text-center">
+                                    <b>Total</b>
+                                </td>
+                                <td class="text-center">
+                                    <b>{{totalSum}}</b>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- END -->
+
+        </div>
+    </div>

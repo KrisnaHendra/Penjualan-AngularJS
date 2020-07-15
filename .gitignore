@@ -1,0 +1,4 @@
+vendor/
+api/vendor/
+api/sessions/
+api/userlog

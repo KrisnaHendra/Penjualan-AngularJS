@@ -1,0 +1,144 @@
+<div class="sidebar">
+    <nav class="sidebar-nav">
+        <ul class="nav">
+            <li class="nav-title">Menu</li>
+            <li class="nav-item">
+                <a class="nav-link" ui-sref-active="active" ui-sref="app.main">
+                    <i class="icon-speedometer"></i>
+                    Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" ui-sref-active="active" ui-sref="app.akun">
+                    <i class="icon-user"></i>
+                    Akun
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" ui-sref-active="active" ui-sref="app.kontak">
+                    <i class="icon-user"></i>
+                    Kontak
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" ui-sref-active="active" ui-sref="app.kasmasuk">
+                    <i class="fa fa-money"></i>
+                    Kas Masuk
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" ui-sref-active="active" ui-sref="app.kaskeluar">
+                    <i class="fa fa-money"></i>
+                    Kas Keluar
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" ui-sref-active="active" ui-sref="app.laporanpemasukan">
+                    <i class="fa fa-file"></i>
+                    Laporan Pemasukan
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" ui-sref-active="active" ui-sref="app.laporanpengeluaran">
+                    <i class="fa fa-file"></i>
+                    Laporan Pengeluaran
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" ui-sref-active="active" ui-sref="app.rankpemasukan">
+                    <i class="fa fa-sort-numeric-asc"></i>
+                    Ranking Pemasukan
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" ui-sref-active="active" ui-sref="app.rekap">
+                    <i class="fa fa-file"></i>
+                    Rekap
+                </a>
+            </li>
+            <li class="nav-title">PENJUALAN</li>
+            <li class="nav-item">
+                <a class="nav-link" ui-sref-active="active" ui-sref="app.barang">
+                    <i class="fa fa-archive"></i>
+                    Barang
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" ui-sref-active="active" ui-sref="app.satuan">
+                    <i class="fa fa-archive"></i>
+                    Satuan
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" ui-sref-active="active" ui-sref="app.kategori">
+                    <i class="fa fa-archive"></i>
+                    Kategori
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" ui-sref-active="active" ui-sref="app.supplier">
+                    <i class="fa fa-user"></i>
+                    Supplier
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" ui-sref-active="active" ui-sref="app.customer">
+                    <i class="fa fa-user"></i>
+                    Customer
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" ui-sref-active="active" ui-sref="app.pembelian">
+                    <i class="fa fa-money"></i>
+                    Pembelian
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" ui-sref-active="active" ui-sref="app.penjualan">
+                    <i class="fa fa-money"></i>
+                    Penjualan
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" ui-sref-active="active" ui-sref="app.laporanpembelian">
+                    <i class="fa fa-file"></i>
+                    Laporan Pembelian
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" ui-sref-active="active" ui-sref="app.rekappenjualan">
+                    <i class="fa fa-file"></i>
+                    Rekap Penjualan
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" ui-sref-active="active" ui-sref="app.penjualanpertahun">
+                    <i class="fa fa-file"></i>
+                    Penjualan Per Tahun
+                </a>
+            </li>
+            <li class="nav-title" ng-if="user.m_roles_id != 4">Pengaturan</li>
+            <li class="nav-item nav-dropdown" ng-class="{open: $state.includes('pengguna')}"
+                ng-if="user.akses.pengguna_akses || user.akses.pengguna_user">
+                <a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('pengguna')}" href="#">
+                    <i class="fa fa-user-o"></i>
+                    User Login
+                </a>
+                <ul class="nav-dropdown-items">
+                    <li class="nav-item" ng-if="user.akses.pengguna_akses">
+                        <a class="nav-link" ui-sref-active="active" ui-sref="pengguna.akses">
+                            <i class="icon-cursor"></i>
+                            Hak Akses
+                        </a>
+                    </li>
+                    <li class="nav-item" ng-if="user.akses.pengguna_user">
+                        <a class="nav-link" ui-sref-active="active" ui-sref="pengguna.user">
+                            <i class="icon-cursor"></i>
+                            Pengguna
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+</div>
